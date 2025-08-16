@@ -7,16 +7,19 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-routes": "tsr generate"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.131.19",
     "@tanstack/react-router-devtools": "^1.131.19",
+    "@tanstack/router-devtools": "^1.131.21",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@tanstack/router-cli": "^1.131.21",
     "@tanstack/router-plugin": "^1.131.19",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",

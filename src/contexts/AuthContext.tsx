@@ -26,15 +26,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const isAuthenticated = !!user;
 
-
   const login = async (username: string, password: string) => {
     const userData = await loginApi(username, password);
-
     setUser(userData)
   }
 
   const logout = () => {
     setUser(null)
+    window.location.href = '/login'
   }
 
   return (
