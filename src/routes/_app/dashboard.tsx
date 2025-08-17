@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: DashboardComponent,
 });
 
 function DashboardComponent() {
-  const { auth } = Route.useRouteContext();
+  const auth = useAuth(); // Usar o hook diretamente
   
   return (
     <div>
@@ -67,7 +68,7 @@ function DashboardComponent() {
             borderRadius: '4px',
             cursor: 'pointer'
           }}>
-            Novo Pedido
+            📝 Novo Pedido
           </button>
           <button style={{
             padding: '0.75rem 1.5rem',
@@ -77,7 +78,7 @@ function DashboardComponent() {
             borderRadius: '4px',
             cursor: 'pointer'
           }}>
-            Ver Relatórios
+            📊 Ver Relatórios
           </button>
           <button style={{
             padding: '0.75rem 1.5rem',
@@ -87,7 +88,7 @@ function DashboardComponent() {
             borderRadius: '4px',
             cursor: 'pointer'
           }}>
-            Gerenciar Usuários
+            👥 Gerenciar Usuários
           </button>
         </div>
       </div>

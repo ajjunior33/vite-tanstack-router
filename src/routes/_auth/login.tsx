@@ -1,5 +1,5 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router';
-import React, { useState } from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 type LoginSearch = {
@@ -17,12 +17,29 @@ export const Route = createFileRoute('/_auth/login')({
 
 function LoginComponent() {
   const auth = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
   const search = Route.useSearch();
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('password');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Se já está autenticado, redireciona imediatamente
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate({ to: search.redirect, replace: true });
+    }
+  }, [auth.isAuthenticated, navigate, search.redirect]);
+
+  // Se já está autenticado, mostra loading enquanto redireciona
+  if (auth.isAuthenticated) {
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <h2>Já está logado!</h2>
+        <p>Redirecionando para o dashboard...</p>
+      </div>
+    );
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +48,7 @@ function LoginComponent() {
     
     try {
       await auth.login(username, password);
-      await router.invalidate();
-      router.navigate({ to: search.redirect, replace: true });
+      // O useEffect acima vai lidar com o redirect após o login
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocorreu um erro');
     } finally {

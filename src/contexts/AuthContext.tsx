@@ -1,13 +1,12 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 const loginApi = async (user: string, pass: string): Promise<{ name: string }> => {
-  console.log("Authenticated: ", user, pass)
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (user === "admin" && pass === "password") {
-        resolve({ name: "User Admin" })
+        resolve({ name: "Administrador" })
       } else {
-        reject(new Error("Credential invalid."))
+        reject(new Error("Credenciais inválidas."))
       }
     }, 2000);
   })
@@ -20,6 +19,8 @@ interface AuthContextType {
   logout: () => void;
 }
 
+const LOCALSTORAGE_USER = "@_USER"
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -28,12 +29,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (username: string, password: string) => {
     const userData = await loginApi(username, password);
-    setUser(userData)
+    localStorage.setItem(LOCALSTORAGE_USER, JSON.stringify(userData))
+    setUser(userData);
   }
 
+  useEffect(() => {
+    const user = localStorage.getItem(LOCALSTORAGE_USER);
+    if (user) {
+      setUser(JSON.parse(user))
+    }
+
+  }, [])
+
   const logout = () => {
-    setUser(null)
-    window.location.href = '/login'
+    setUser(null);
+    localStorage.removeItem(LOCALSTORAGE_USER)
+    window.location.href = '/login';
   }
 
   return (
@@ -48,11 +59,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth not used in AuthProvider");
+    throw new Error("useAuth deve ser usado dentro de AuthProvider");
   }
-
-  return context
+  return context;
 }
+
+// Export do tipo para usar em outros arquivos
+export type { AuthContextType };

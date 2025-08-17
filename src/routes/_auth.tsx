@@ -1,19 +1,17 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 import CenteredFormLayout from '../components/CenteredFormLayout';
 
 export const Route = createFileRoute('/_auth')({
-  beforeLoad: ({ context }) => {
-    // Se já está autenticado, redireciona para dashboard
-    if (context.auth.isAuthenticated) {
-      throw redirect({
-        to: '/dashboard',
-        replace: true,
-      });
-    }
-  },
-  component: () => (
+  component: AuthLayout,
+})
+
+function AuthLayout() {
+  // Removemos a verificação de autenticação daqui
+  // Deixamos cada rota filha lidar com isso
+  
+  return (
     <CenteredFormLayout>
       <Outlet />
     </CenteredFormLayout>
-  )
-})
+  );
+}

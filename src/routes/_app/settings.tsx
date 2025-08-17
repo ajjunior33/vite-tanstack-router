@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Route = createFileRoute('/_app/settings')({
   component: SettingsComponent,
 });
 
 function SettingsComponent() {
-  const { auth } = Route.useRouteContext();
+  const auth = useAuth(); // Usar o hook diretamente
   
   return (
     <div>
@@ -19,7 +20,7 @@ function SettingsComponent() {
           borderRadius: '8px',
           marginBottom: '1rem'
         }}>
-          <h3>Informações da Conta</h3>
+          <h3>👤 Informações da Conta</h3>
           <div style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
@@ -62,15 +63,19 @@ function SettingsComponent() {
           borderRadius: '8px',
           marginBottom: '1rem'
         }}>
-          <h3>Preferências</h3>
+          <h3>⚙️ Preferências</h3>
           <div style={{ marginTop: '1rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <input type="checkbox" defaultChecked />
+              📧 Receber notificações por email
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <input type="checkbox" />
+              🌙 Modo escuro
+            </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <input type="checkbox" defaultChecked />
-              Receber notificações por email
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <input type="checkbox" />
-              Modo escuro
+              🔔 Notificações push
             </label>
           </div>
         </div>
@@ -83,7 +88,7 @@ function SettingsComponent() {
           borderRadius: '4px',
           cursor: 'pointer'
         }}>
-          Salvar Alterações
+          💾 Salvar Alterações
         </button>
       </div>
     </div>
